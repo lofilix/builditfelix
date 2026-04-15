@@ -1,0 +1,1409 @@
+/* components/sections/GBAProjects.module.css — McLaren GBA Redesign */
+
+/* ── Section ── */
+
+.section {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  padding: calc(var(--u) * 4) calc(var(--u) * 2) calc(var(--u) * 4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── GBA wrapper: flex row — GBA section left, phone panel right ── */
+
+.gbaWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 1320px;
+  margin: calc(var(--u) * 2) auto 0;
+  gap: 0;
+  transition:
+    max-width 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    gap 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.gbaWrapperIOSActive {
+  max-width: 1520px;
+  gap: calc(var(--u) * 3);
+  align-items: center;
+}
+
+/* ── GBA section: vertical stack of cartridge + console ── */
+
+.gbaSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Device frame: owns all cartridge/console geometry ── */
+
+.deviceFrame {
+  --deviceW: clamp(700px, 78vw, 1040px);
+  --cartH: clamp(148px, 14vw, 196px);
+  --cartInsert: clamp(22px, 2.2vw, 34px);
+
+  position: relative;
+  width: min(100%, var(--deviceW));
+  padding-top: calc(var(--cartH) - var(--cartInsert));
+  display: block;
+}
+
+/* ───────────────────────────────────────────────
+   CARTRIDGE
+   Protrudes from the top slot, dark McLaren theme
+─────────────────────────────────────────────── */
+
+.cartridge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: clamp(280px, 46%, 540px);
+  height: var(--cartH);
+  background: #111118;
+  border-radius: 10px 10px 0 0;
+  padding: clamp(12px, 1.4vw, 16px) clamp(14px, 1.8vw, 20px)
+    clamp(22px, 2.6vw, 30px);
+  border: 1px solid rgba(255, 128, 0, 0.15);
+  border-bottom: none;
+  box-shadow:
+    0 -4px 20px rgba(0, 0, 0, 0.5),
+    0 -6px 36px rgba(255, 128, 0, 0.07),
+    0 0 28px rgba(255, 150, 70, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.cartridgeNotch {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 8px;
+  background: #0A0A0C;
+  border-radius: 3px 3px 0 0;
+}
+
+.cartridgeLabel {
+  background: #1A1A24;
+  border-radius: 6px;
+  padding: 12px 14px;
+  text-align: center;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 128, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cartridgeLabel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 128, 0, 0.04) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.cartridgeTitle {
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(15px, 1.35vw, 19px);
+  color: var(--orange);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cartridgeSub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.95vw, 12px);
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.cartridgeTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.cartridgeTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.9vw, 12px);
+  padding: 4px 8px;
+  background: rgba(255, 128, 0, 0.1);
+  color: rgba(255, 255, 255, 0.78);
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 128, 0, 0.18);
+}
+
+.cartridgeLink {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.95vw, 12px);
+  color: var(--orange);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  display: inline-block;
+  opacity: 0.88;
+  transition: opacity 0.2s ease;
+}
+
+.cartridgeContent {
+  transition:
+    opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cartridgeContentHidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cartridgeLink:hover {
+    opacity: 1;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   GBA CONSOLE BODY
+   Near-black graphite, dramatic swept corners
+─────────────────────────────────────────────── */
+
+.console {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: #0E0E14;
+  /* Dramatic bottom sweep matching real GBA silhouette */
+  border-radius: 14px 14px 56px 56px / 14px 14px 68px 68px;
+  padding: 0 0 calc(var(--u) * 2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 20px 64px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 48px rgba(255, 128, 0, 0.055),
+    0 0 72px rgba(80, 120, 200, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ── Cartridge slot/lip: ties cartridge to console body ── */
+
+.console::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(260px, 58%, 620px);
+  height: clamp(26px, 2.8vw, 40px);
+  border-radius: 0 0 18px 18px;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -10px 18px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.console::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(240px, 54%, 600px);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  filter: blur(0.2px);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* ── Shoulder buttons strip ── */
+
+.shoulders {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* flush against the rounded top of console */
+}
+
+.shoulderL,
+.shoulderR {
+  width: 100px;
+  height: 34px;
+  background: #18181F;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.16s ease-out, background 0.14s ease;
+  /* D-shaped hump: flat top edge, curved bottom — matches reference */
+  border-radius: 0 0 28px 28px;
+  border-top: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.shoulderL {
+  border-left: none;
+}
+
+.shoulderR {
+  border-right: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shoulderL:hover,
+  .shoulderR:hover {
+    background: #202030;
+  }
+}
+
+.shoulderL:active,
+.shoulderR:active {
+  transform: scaleY(0.88);
+  transform-origin: top center;
+}
+
+.shoulderL:focus-visible,
+.shoulderR:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  z-index: 2;
+}
+
+/* ── 3-column main row ── */
+
+.mainRow {
+  display: grid;
+  /* Controls get a fixed minimum, screen fills remainder */
+  grid-template-columns: minmax(112px, 164px) 1fr minmax(112px, 164px);
+  align-items: center;
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 1.5);
+  gap: calc(var(--u) * 0.75);
+}
+
+@media (min-width: 1025px) {
+  /* Hero mode: bias layout toward the screen */
+  .mainRow {
+    grid-template-columns: minmax(104px, 150px) 1fr minmax(104px, 150px);
+    padding: calc(var(--u) * 1.75) calc(var(--u) * 1.75);
+    gap: calc(var(--u) * 1);
+  }
+}
+
+/* LEFT panel: D-pad stacked above Start/Select */
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 1);
+  padding-bottom: calc(var(--u) * 0.75);
+}
+
+/* CENTER panel: Screen */
+.centerPanel {
+  /* takes full center column */
+}
+
+/* RIGHT panel: A/B + speaker */
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 1.25);
+}
+
+/* ── Screen bezel — no powerRow inside, just the screen itself ── */
+
+.screenBezel {
+  background: #060608;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow:
+    inset 0 3px 14px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Power indicator row — lives on console body in rightPanel */
+.powerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.powerLed {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow:
+    0 0 8px var(--orange),
+    0 0 3px var(--orange);
+  flex-shrink: 0;
+}
+
+.powerLabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Mute (moved from START on desktop) */
+.gbaMuteBtn {
+  appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.gbaMuteBtn:hover {
+  color: var(--orange);
+  border-color: rgba(255, 128, 0, 0.28);
+  background: rgba(255, 128, 0, 0.06);
+}
+
+/* "GAME BOY ADVANCE" brand text below screen */
+.brandText {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(7px, 0.9vw, 10px);
+  color: rgba(255, 255, 255, 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-top: 8px;
+  user-select: none;
+}
+
+/* ── Game screen ── */
+
+.screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: #0A0A12;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+/* ───────────────────────────────────────────────
+   POKEMON MENU SCREEN
+─────────────────────────────────────────────── */
+
+.menuScreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 8% 4% 6%;
+  gap: 4%;
+  transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menuScreenHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menuItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 6% 5% 6% 10%;
+  border-radius: 2px;
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(15px, 2.7vw, 24px);
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: none;
+}
+
+button.menuItem {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+}
+
+button.menuItem:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.menuItemActive {
+  background: #0E0E14;
+  color: var(--orange);
+  border-left: 3px solid var(--orange);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 128, 0, 0.35),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.6),
+    3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.menuItemInactive {
+  background: #1A1A26;
+  color: rgba(255, 255, 255, 0.44);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.06),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.menuArrow {
+  position: absolute;
+  left: 3%;
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(15px, 2.7vw, 24px);
+  color: var(--orange);
+  transition: transform 0.12s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ───────────────────────────────────────────────
+   CAROUSEL SCREEN
+─────────────────────────────────────────────── */
+
+.carouselScreen {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.carouselScreenHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.slideTrack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  transition:
+    transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
+}
+
+.slideActive {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slideLeft {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slideRight {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slideImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 10px rgba(255, 140, 90, 0.12))
+    drop-shadow(0 0 20px rgba(255, 128, 0, 0.06));
+}
+
+.slideOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 9% 5.5% 5.5%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.slideName {
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(13px, 2.4vw, 20px);
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.75);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.18s ease, opacity 0.18s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .slideName:hover {
+    color: var(--orange);
+  }
+}
+
+.slideName:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.slideCounter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(11px, 1.65vw, 14px);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ── Back to Menu slide ── */
+
+.backSlide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8%;
+  background: #0A0A12;
+  transition:
+    transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.backSlideLabel {
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.backSlideHint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 1.35vw, 12px);
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ───────────────────────────────────────────────
+   D-PAD — proper cross shape, dark McLaren tones
+─────────────────────────────────────────────── */
+
+.dpad {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+
+.dpadCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: #111118;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.dpadBtn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1C1C28;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+  cursor: pointer;
+  transition: transform 0.16s ease-out, background 0.12s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.dpadBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  z-index: 3;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dpadBtn:hover {
+    background: #242436;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.dpadUp {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 38px;
+  border-radius: 6px 6px 0 0;
+}
+.dpadUp:active {
+  transform: translateX(-50%) scale(0.9);
+}
+
+.dpadDown {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 38px;
+  border-radius: 0 0 6px 6px;
+}
+.dpadDown:active {
+  transform: translateX(-50%) scale(0.9);
+}
+
+.dpadLeft {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 32px;
+  border-radius: 6px 0 0 6px;
+}
+.dpadLeft:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+.dpadRight {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 32px;
+  border-radius: 0 6px 6px 0;
+}
+.dpadRight:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+/* ───────────────────────────────────────────────
+   A / B BUTTONS — diagonal grouping, right panel
+─────────────────────────────────────────────── */
+
+.abGroup {
+  position: relative;
+  width: 96px;
+  height: 80px;
+}
+
+.abBtn {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: 'Silkscreen', cursive;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.16s ease-out;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.abBtn:active {
+  transform: scale(0.88) !important;
+}
+
+.abBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* A — top-right, orange accent */
+.btnA {
+  top: 0;
+  right: 0;
+  background: #1E1E2C;
+  color: var(--orange);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btnA:hover {
+    background: #26263A;
+  }
+}
+
+/* B — bottom-left, muted */
+.btnB {
+  bottom: 0;
+  left: 0;
+  background: #1E1E2C;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btnB:hover {
+    background: #26263A;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* ── Speaker line grilles — diagonal like reference illustration ── */
+
+.speakerDots {
+  width: 52px;
+  height: 48px;
+  background-image: repeating-linear-gradient(
+    -55deg,
+    rgba(255, 255, 255, 0.14) 0px,
+    rgba(255, 255, 255, 0.14) 2px,
+    transparent 2px,
+    transparent 9px
+  );
+  border-radius: 4px;
+  opacity: 0.9;
+}
+
+/* ───────────────────────────────────────────────
+   LEFT META — Start / Select under D-pad (left panel)
+─────────────────────────────────────────────── */
+
+.leftMeta {
+  display: flex;
+  gap: calc(var(--u) * 0.75);
+  justify-content: center;
+  align-items: center;
+}
+
+.metaBtn {
+  width: 58px;
+  height: 16px;
+  background: #1A1A26;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  color: rgba(255, 160, 80, 0.85);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.16s ease-out, background 0.12s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* SELECT angled left, START angled right — like real GBA */
+.metaBtnSelect {
+  transform: rotate(-12deg);
+}
+.metaBtnSelect:active {
+  transform: rotate(-12deg) scale(0.9);
+}
+
+.metaBtnStart {
+  transform: rotate(12deg);
+}
+.metaBtnStart:active {
+  transform: rotate(12deg) scale(0.9);
+}
+
+.metaBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  z-index: 2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .metaBtn:hover {
+    background: #22223A;
+    color: var(--orange);
+  }
+}
+
+/* ── Live region (screen reader only) ── */
+
+.liveRegion {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ───────────────────────────────────────────────
+   MOBILE INFO DRAWER
+─────────────────────────────────────────────── */
+
+.mobileInfo {
+  display: none;
+}
+
+.mobileInfoTitle {
+  font-family: 'Silkscreen', cursive;
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.mobileInfoDesc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.mobileInfoTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mobileInfoLink {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--orange);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: opacity 0.2s ease;
+}
+
+/* ───────────────────────────────────────────────
+   MOBILE CONTROLS OVERLAY
+─────────────────────────────────────────────── */
+
+.mobileControls {
+  display: none;
+}
+
+.mobileControlsExtra {
+  display: none;
+}
+
+.mobileControlBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 128, 0, 0.2);
+  background: rgba(255, 128, 0, 0.06);
+  color: rgba(255, 128, 0, 0.6);
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.16s ease-out, background 0.12s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobileControlBtn:active {
+  transform: scale(0.88);
+  background: rgba(255, 128, 0, 0.14);
+}
+
+/* ───────────────────────────────────────────────
+   RESPONSIVE — 768px breakpoint
+─────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .iosPhonePanelActive {
+    flex: 0 0 220px;
+  }
+
+  .phoneFrameLarge {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menuItem {
+    min-height: 44px;
+  }
+
+  .section {
+    padding: calc(var(--u) * 3) calc(var(--u) * 1);
+  }
+
+  .gbaWrapper,
+  .gbaWrapperIOSActive {
+    max-width: 100%;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .gbaSection {
+    width: 100%;
+  }
+
+  /* Phone panel never shows on mobile */
+  .iosPhonePanel,
+  .iosPhonePanelActive {
+    display: none;
+  }
+
+  .deviceFrame {
+    --deviceW: min(94vw, 760px);
+    --cartH: clamp(116px, 24vw, 156px);
+    --cartInsert: clamp(16px, 4vw, 24px);
+  }
+
+  /* On mobile: keep device identity, simplify controls */
+  .console {
+    padding: 0 0 calc(var(--u) * 1.25);
+  }
+
+  .shoulders {
+    display: none;
+  }
+
+  .mainRow {
+    grid-template-columns: 1fr;
+  }
+
+  .leftPanel,
+  .rightPanel,
+  .leftMeta {
+    display: none;
+  }
+
+  .screenBezel {
+    border-radius: 8px;
+  }
+
+  .mobileControls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: calc(var(--u) * 1) 0;
+  }
+
+  .mobileControlsExtra {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 0 calc(var(--u) * 1);
+  }
+
+  .mobileInfo {
+    display: block;
+    text-align: center;
+    padding: 0 calc(var(--u) * 1);
+    margin-top: calc(var(--u) * 1);
+  }
+
+  .mobileInfoTags {
+    justify-content: center;
+  }
+
+  .mobileInfoLink {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 480px) {
+  .screen {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   REDUCED MOTION
+─────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .menuScreen,
+  .carouselScreen,
+  .cartridgeContent,
+  .menuArrow,
+  .backSlide {
+    transition-duration: 0ms;
+  }
+
+  .shoulderL,
+  .shoulderR,
+  .dpadBtn,
+  .abBtn,
+  .metaBtn,
+  .mobileControlBtn {
+    transition-duration: 0ms;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   iOS LINK CABLE MODE
+─────────────────────────────────────────────── */
+
+/* Boot Screen */
+
+@keyframes bootFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bootBarFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@keyframes bootScreenExit {
+  0%, 75% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+.bootScreen {
+  position: absolute;
+  inset: 0;
+  background: #0A0A12;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8% 10%;
+  gap: 8%;
+  z-index: 10;
+  animation: bootScreenExit var(--bootDurationMs, 2400ms) ease forwards;
+}
+
+.bootHeader {
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(11px, 1.65vw, 15px);
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: bootFadeIn 0.3s ease 0s forwards;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bootHeaderIcon {
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+.bootLine {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 1.25vw, 12px);
+  color: rgba(255, 200, 140, 0.92);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bootLine1 {
+  animation: bootFadeIn 0.25s ease 0.25s forwards;
+}
+
+.bootLine2 {
+  animation: bootFadeIn 0.25s ease 0.6s forwards;
+}
+
+.bootLine3 {
+  animation: bootFadeIn 0.25s ease 0.95s forwards;
+}
+
+.bootBarTrack {
+  width: 38%;
+  height: 4px;
+  background: rgba(255, 128, 0, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.bootBar {
+  height: 100%;
+  width: 0%;
+  background: var(--orange);
+  border-radius: 2px;
+  display: block;
+  animation: bootBarFill 0.35s ease 1.1s forwards;
+}
+
+/* ── iOS Phone Panel (external, right side of GBA) ── */
+
+.iosPhonePanel {
+  flex: 0 0 0px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(40px);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    flex 0.65s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.4s ease 0.3s,
+    transform 0.55s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+}
+
+.iosPhonePanelActive {
+  flex: 0 0 280px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* Large iPhone frame — screenshot fills edge-to-edge (image already has Dynamic Island) */
+
+.phoneFrameLarge {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 9 / 19.5;
+  background: #0A0A0F;
+  border-radius: 40px;
+  border: 2px solid rgba(255, 128, 0, 0.25);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 24px 64px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(255, 128, 0, 0.07),
+    0 0 36px rgba(185, 205, 230, 0.12),
+    0 0 52px rgba(140, 175, 220, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.phoneScreenAreaLarge {
+  position: absolute;
+  inset: 0;
+  box-shadow:
+    inset 0 0 48px rgba(120, 155, 210, 0.08),
+    inset 0 0 2px rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+.phoneImageLarge {
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ── iOS screen card — text info inside GBA screen ── */
+
+.iosScreenCard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7% 9%;
+  gap: 4.5%;
+  background: #080810;
+}
+
+.iosScreenLabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 1.15vw, 11px);
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.92;
+}
+
+.iosScreenName {
+  font-family: 'Silkscreen', cursive;
+  font-size: clamp(13px, 2.2vw, 20px);
+  color: var(--text);
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.iosScreenDesc {
+  font-family: var(--font-outfit), 'Outfit', system-ui, sans-serif;
+  font-size: clamp(10px, 1.35vw, 13px);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.iosScreenTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.iosScreenTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 1vw, 11px);
+  padding: 3px 8px;
+  background: rgba(255, 128, 0, 0.1);
+  color: rgba(255, 255, 255, 0.82);
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 128, 0, 0.22);
+}
+
+.iosScreenFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.iosScreenLink {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 1.15vw, 12px);
+  color: var(--orange);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iosScreenLink:hover {
+    opacity: 1;
+  }
+}
+
+.iosScreenLink:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.iosScreenCounter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 1.15vw, 12px);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* iOS App badge in cartridge label */
+
+.phoneBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 128, 0, 0.08);
+  border: 1px solid rgba(255, 128, 0, 0.2);
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(8px, 0.85vw, 10px);
+  color: rgba(255, 128, 0, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  align-self: center;
+}
+
+/* Reduced motion overrides for boot sequence + panel transitions */
+
+@media (prefers-reduced-motion: reduce) {
+  .bootScreen {
+    animation-duration: 0ms !important;
+  }
+
+  .bootHeader,
+  .bootLine1,
+  .bootLine2,
+  .bootLine3 {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    opacity: 1;
+  }
+
+  .bootBar {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    width: 100%;
+  }
+
+  .gbaWrapper,
+  .iosPhonePanel,
+  .iosScreenLink {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}

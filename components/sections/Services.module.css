@@ -1,0 +1,1066 @@
+/* ─── Section ─────────────────────────────────────────────────── */
+.servicesSection {
+  padding: calc(var(--u) * 4) calc(var(--u) * 1.5);
+  background: var(--dark);
+}
+
+@media (max-width: 600px) {
+  .servicesSection {
+    padding: calc(var(--u) * 2) calc(var(--u) * 1);
+  }
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ─── Scroll Scene (vertical narrative) ───────────────────────── */
+.scrollScene {
+  position: relative;
+  margin-top: 0;
+}
+
+.sceneMain {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: calc(var(--u) * 1.5);
+  align-items: start;
+  padding-top: calc(var(--u) * 0.75);
+}
+
+.trackCol {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: calc(var(--u) * 1);
+  opacity: calc(1 - var(--reveal-t, 0));
+  transition: opacity 350ms ease;
+}
+
+.verticalTrack {
+  position: relative;
+  width: 64px;
+  height: min(640px, 78vh);
+}
+
+.trackLineV {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: var(--pos, 50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 0 8px rgba(255, 230, 140, 0.35),
+    0 0 14px rgba(255, 210, 90, 0.2),
+    0 0 10px rgba(255, 255, 255, 0.12);
+  opacity: 0.9;
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+
+.dotEaten {
+  opacity: 0.18;
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+.pacmanWrap {
+  position: absolute;
+  left: 50%;
+  top: var(--pacPos, 50%);
+  width: 56px;
+  height: 56px;
+  /* Align on the dot line and face scroll direction. */
+  transform: translate(-50%, -50%) rotate(var(--pacRot, 90deg));
+  filter: drop-shadow(0 0 18px rgba(255, 140, 40, 0.32)) drop-shadow(0 0 8px rgba(255, 100, 0, 0.22));
+  transition:
+    top 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: top, transform;
+}
+
+.pacmanSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.pacBody {
+  fill: var(--orange);
+}
+
+.pacHidden {
+  opacity: 0;
+}
+
+.pacStatic {
+  opacity: 1;
+}
+
+.pacOpen {
+  animation: pacChompOpen 260ms steps(2, end) infinite;
+}
+
+.pacClosed {
+  animation: pacChompClosed 260ms steps(2, end) infinite;
+}
+
+@keyframes pacChompOpen {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pacChompClosed {
+  0%,
+  49% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.cardCol {
+  position: relative;
+}
+
+.cardColHidden {
+  pointer-events: none;
+}
+
+.stickyCard {
+  position: sticky;
+  top: calc(var(--u) * 1.25);
+  padding: calc(var(--u) * 1.35) calc(var(--u) * 2);
+  background: rgba(10, 10, 12, 0.9);
+  border: 1px solid rgba(255, 128, 0, 0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.cardKicker {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.kickerHint {
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: none;
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.navBtn,
+.navBtnAlt {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.navBtn:hover,
+.navBtnAlt:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.navBtn:disabled,
+.navBtnAlt:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.navBtnAlt {
+  border-color: rgba(255, 128, 0, 0.22);
+  background: rgba(255, 128, 0, 0.06);
+}
+
+.navBtnAlt:hover {
+  border-color: rgba(255, 128, 0, 0.32);
+  background: rgba(255, 128, 0, 0.09);
+}
+
+/* ─── Reduced motion layout ───────────────────────────────────── */
+.reduceWrap {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.reduceIntro {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0 0 calc(var(--u) * 1.25);
+}
+
+.reduceList {
+  display: grid;
+  gap: 10px;
+  margin-bottom: calc(var(--u) * 1.5);
+}
+
+.reduceItem {
+  background: rgba(10, 10, 12, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  overflow: clip;
+}
+
+.reduceSummary {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.reduceSummary::-webkit-details-marker {
+  display: none;
+}
+
+.reduceName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.reducePrice {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: var(--orange);
+  white-space: nowrap;
+}
+
+.reduceBody {
+  padding: 0 16px 16px;
+}
+
+.reduceDesc {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.reduceAnalogy {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-style: italic;
+  border-left: 2px solid var(--orange-glow);
+  padding-left: 10px;
+}
+
+.reduceTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stickyName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: clamp(18px, 2.6vw, 28px);
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.stickyPrice {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 13px;
+  color: var(--orange);
+  letter-spacing: 1px;
+  margin-bottom: calc(var(--u) * 0.75);
+}
+
+.stickyDesc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  margin-bottom: calc(var(--u) * 0.75);
+}
+
+.stickyAnalogy {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: calc(var(--u) * 1);
+  padding-left: calc(var(--u) * 0.5);
+  border-left: 2px solid var(--orange-glow);
+}
+
+.stickyIncludes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ─── Grid panel (replaces sticky card at step 9) ─────────────── */
+.gridPanel {
+  position: sticky;
+  top: calc(var(--u) * 1);
+  padding: calc(var(--u) * 1.25) calc(var(--u) * 2);
+  background: rgba(10, 10, 12, 0.9);
+  border: 1px solid rgba(255, 128, 0, 0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.gridPanelHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: calc(var(--u) * 1);
+  margin-bottom: calc(var(--u) * 0.85);
+}
+
+.gridPanelTitle {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+  opacity: 0.9;
+}
+
+.gridPanelGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--u) * 0.75);
+}
+
+.gridMiniCard {
+  padding: calc(var(--u) * 0.9);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.gridMiniName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: 12px;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.gridMiniPrice {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: var(--orange);
+  margin: 0 0 6px;
+}
+
+.gridMiniDesc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-dim);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .gridPanel {
+    padding: calc(var(--u) * 1.25) calc(var(--u) * 1.25);
+  }
+
+  .gridPanelGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .sceneMain {
+    grid-template-columns: 1fr;
+  }
+
+  .trackCol {
+    padding-top: 0;
+    justify-content: flex-start;
+  }
+
+  .verticalTrack {
+    width: 100%;
+    height: 120px;
+  }
+
+  .trackLineV {
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+
+  .dot {
+    top: 50% !important;
+    left: var(--pos, 50%);
+    transform: translate(-50%, -50%);
+  }
+
+  .pacmanWrap {
+    top: 50% !important;
+    left: var(--pacPos, 0%);
+    /* Horizontal layout: rotation from --pacRot (0deg forward, 180deg when scrolling up) */
+    transform: translate(-50%, -50%) rotate(var(--pacRot, 0deg));
+    transition:
+      left 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: left, transform;
+  }
+}
+
+/* ─── Floating ghosts (decorative) ────────────────────────────── */
+.ghostsLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.sceneMain {
+  z-index: 1;
+}
+
+.ghost {
+  position: absolute;
+  left: var(--gx, 50%);
+  top: var(--gy, 50%);
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%) scale(var(--gscale, 1));
+  opacity: var(--gop, 0.18);
+  filter: blur(0px) drop-shadow(0 0 10px hsl(var(--ghue, 210) 78% 58% / 0.38))
+    drop-shadow(0 0 22px hsl(var(--ghue, 210) 88% 52% / 0.14));
+  animation:
+    ghostWander var(--gdur, 12s) linear infinite,
+    ghostBob calc(var(--gdur, 12s) * 0.55) ease-in-out infinite;
+  animation-delay: var(--gdelay, 0s), var(--gdelay, 0s);
+  will-change: transform;
+}
+
+.ghostBody {
+  fill: hsl(var(--ghue, 210) 85% 66% / 1);
+}
+
+.ghostEyeWhite {
+  fill: rgba(250, 250, 255, 0.92);
+}
+
+.ghostEyePupil {
+  fill: rgba(18, 18, 22, 0.9);
+}
+
+@keyframes ghostWander {
+  0% {
+    transform: translate(-50%, -50%) scale(var(--gscale, 1))
+      translate3d(calc(var(--gdx, 10px) * -0.35), calc(var(--gdy, 10px) * -0.25), 0)
+      rotate(-2deg);
+  }
+  35% {
+    transform: translate(-50%, -50%) scale(var(--gscale, 1))
+      translate3d(calc(var(--gdx, 10px) * 0.55), calc(var(--gdy, 10px) * 0.95), 0)
+      rotate(2deg);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(var(--gscale, 1))
+      translate3d(var(--gdx, 10px), calc(var(--gdy, 10px) * -0.65), 0)
+      rotate(-1deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(var(--gscale, 1))
+      translate3d(calc(var(--gdx, 10px) * -0.35), calc(var(--gdy, 10px) * -0.25), 0)
+      rotate(-2deg);
+  }
+}
+
+@keyframes ghostBob {
+  0%,
+  100% {
+    filter: blur(0px) drop-shadow(0 0 10px hsl(var(--ghue, 210) 78% 58% / 0.38))
+      drop-shadow(0 0 22px hsl(var(--ghue, 210) 88% 52% / 0.14));
+  }
+  50% {
+    filter: blur(0.2px) drop-shadow(0 0 10px hsl(var(--ghue, 210) 78% 58% / 0.38))
+      drop-shadow(0 0 22px hsl(var(--ghue, 210) 88% 52% / 0.14));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ghost {
+    animation: none;
+  }
+
+  .pacmanWrap {
+    transition: none;
+  }
+
+  .dot {
+    transition: none;
+  }
+}
+
+/* ─── Game container ─────────────────────────────────────────── */
+.gameContainer {
+  position: relative;
+  min-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .gameContainer {
+    display: none;
+  }
+
+  .gameEndCTA {
+    display: none;
+  }
+}
+
+/* Legacy game ghosts (kept for reference, not used in current markup) */
+.gameGhostsLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 0;
+}
+
+.gameGhost {
+  position: absolute;
+  width: 32px;
+  height: 36px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  animation: ghostFloat 8s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .gameGhost:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+@keyframes ghostFloat {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(30px, -15px);
+  }
+  50% {
+    transform: translate(-10px, 10px);
+  }
+  75% {
+    transform: translate(20px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gameGhost {
+    animation: none;
+  }
+}
+
+/* ─── Track ───────────────────────────────────────────────────── */
+.gameTrack {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 80px;
+  margin: calc(var(--u) * 3) auto;
+  display: flex;
+  align-items: center;
+}
+
+.trackLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--dark-4);
+  transform: translateY(-50%);
+}
+
+/* ─── Pac-Man ───────────────────────────────────────────────── */
+.pacman {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: var(--orange);
+  border-radius: 50%;
+  clip-path: polygon(100% 50%, 65% 0%, 0% 0%, 0% 100%, 65% 100%);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  top: 50%;
+  left: var(--pac-x, 0%);
+  will-change: left;
+}
+
+.pacmanChomp {
+  animation: chomp 0.25s steps(2) infinite;
+}
+
+@media (max-width: 768px) {
+  .pacman {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@keyframes chomp {
+  0% {
+    clip-path: polygon(100% 50%, 65% 0%, 0% 0%, 0% 100%, 65% 100%);
+  }
+  50% {
+    clip-path: polygon(100% 50%, 50% 15%, 0% 0%, 0% 100%, 50% 85%);
+  }
+  100% {
+    clip-path: polygon(100% 50%, 65% 0%, 0% 0%, 0% 100%, 65% 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pacman {
+    transition-duration: 0s;
+  }
+
+  .pacmanChomp {
+    animation: none;
+  }
+}
+
+/* ─── Pellets ───────────────────────────────────────────────── */
+.pellet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dark-4);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: opacity 0.25s ease;
+}
+
+.pelletHidden {
+  opacity: 0.15;
+}
+
+/* ─── Service dots ─────────────────────────────────────────── */
+.serviceDot {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--orange);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  box-shadow: 0 0 12px var(--orange-glow);
+  animation: dotPulse 2s ease-in-out infinite;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.serviceDotEaten {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.serviceDotLabel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .serviceDotLabel {
+    display: none;
+  }
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--orange-glow);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--orange-glow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceDot {
+    animation: none;
+  }
+}
+
+/* ─── Dim overlay ───────────────────────────────────────────── */
+.gameDim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.6);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: var(--radius);
+}
+
+.gameDimActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Service card ─────────────────────────────────────────── */
+.serviceCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(10px);
+  width: min(480px, 90vw);
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 2);
+  background: rgba(10, 10, 12, 0.95);
+  border: 1px solid rgba(255, 128, 0, 0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.serviceCardVisible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) translateY(0);
+}
+
+.serviceCardName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.serviceCardPrice {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 14px;
+  color: var(--orange);
+  margin-bottom: calc(var(--u) * 0.75);
+  letter-spacing: 1px;
+}
+
+.serviceCardDesc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin-bottom: calc(var(--u) * 0.75);
+}
+
+.serviceCardAnalogy {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: calc(var(--u) * 1);
+  padding-left: calc(var(--u) * 0.5);
+  border-left: 2px solid var(--orange-glow);
+}
+
+.serviceCardIncludes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: calc(var(--u) * 1);
+}
+
+.serviceCardContinue {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: var(--orange);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  transition: gap 0.3s ease;
+}
+
+.serviceCardContinue:hover {
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .serviceCardPrice {
+    font-size: 13px;
+  }
+
+  .serviceCardDesc {
+    font-size: 13px;
+  }
+
+  .serviceCardAnalogy {
+    font-size: 12px;
+  }
+}
+
+/* ─── Controls ──────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--u) * 2);
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.controlBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  color: var(--text-dim);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.controlBtn:hover {
+  background: var(--dark-4);
+  border-color: rgba(255, 128, 0, 0.2);
+}
+
+.controlBtn:active {
+  transform: scale(0.92);
+}
+
+@media (max-width: 768px) {
+  .controlBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+
+/* ─── Mute ─────────────────────────────────────────────────── */
+.muteBtn {
+  position: absolute;
+  top: calc(var(--u) * 0.5);
+  right: calc(var(--u) * 0.5);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 20;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  padding: 4px;
+  line-height: 0;
+}
+
+.muteBtn:hover {
+  opacity: 1;
+}
+
+/* ─── End CTA ─────────────────────────────────────────────── */
+.gameEndCTA {
+  text-align: center;
+  padding: calc(var(--u) * 3) calc(var(--u) * 2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  pointer-events: none;
+}
+
+.gameEndCTAVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.gameEndTitle {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: clamp(20px, 3vw, 32px);
+  color: var(--text);
+  margin-bottom: calc(var(--u) * 0.5);
+}
+
+.gameEndSubtitle {
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: calc(var(--u) * 1.5);
+  line-height: 1.6;
+}
+
+.bookCallBtn {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--dark);
+  background: var(--orange);
+  border: none;
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 1.5);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.bookCallBtn:hover {
+  background: var(--orange-bright);
+  box-shadow: 0 0 30px rgba(255, 128, 0, 0.3);
+}
+
+.bookCallBtn:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+
+/* ─── Skip + grid ─────────────────────────────────────────── */
+.skipLink {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: calc(var(--u) * 1);
+  display: block;
+  text-align: center;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+.skipLink:hover {
+  color: var(--text-dim);
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: calc(var(--u) * 1);
+  max-width: 1100px;
+  margin: calc(var(--u) * 2) auto 0;
+  padding: 0 calc(var(--u) * 1);
+}
+
+@media (max-width: 600px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gridCard {
+  padding: calc(var(--u) * 1);
+  background: var(--dark-2);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius-sm);
+}
+
+.gridCardName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.gridCardPrice {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.gridCardDesc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}

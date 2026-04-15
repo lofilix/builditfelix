@@ -1,0 +1,227 @@
+/* components/sections/Hero.module.css */
+
+.heroSection {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Glow Orb ─────────────────────────────────────────────────── */
+.glowOrb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  inset: 0;
+  margin: auto;
+  background: radial-gradient(circle, rgba(255, 128, 0, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.3;
+  will-change: transform, opacity;
+  animation: glowHeartbeat 2.6s ease-in-out infinite;
+}
+
+/* ─── Internal scroller (simple, robust) ───────────────────────── */
+.heroScroller {
+  position: relative;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  z-index: 10;
+  scrollbar-width: none;
+}
+
+.handoff {
+  /* Once on the final slide, we handle downward scroll by moving the page */
+  overscroll-behavior: auto;
+}
+
+.heroScroller::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.slide {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.scrollLineSlide {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: clamp(28px, 5vw, 56px);
+  line-height: 1.2;
+  color: var(--text);
+  max-width: 90vw;
+}
+
+.lineIntro {
+  color: var(--text);
+  font-size: clamp(32px, 5.5vw, 64px);
+}
+
+.line1 {
+  color: var(--orange-bright);
+}
+
+.line3 {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: clamp(18px, 3vw, 36px);
+  color: var(--orange);
+  letter-spacing: 0.02em;
+}
+
+.line4 {
+  color: var(--text-muted);
+  font-size: clamp(24px, 4vw, 48px);
+}
+
+.line4::after {
+  content: '|';
+  animation: cursorBlink 1s step-end infinite;
+  color: var(--orange);
+  margin-left: 4px;
+  font-weight: 100;
+}
+
+/* ─── Static Hero slide ────────────────────────────────────────── */
+.staticHeroSlide,
+.staticHeroReduced {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.staticHeroReduced {
+  min-height: 100vh;
+  padding: 0 40px;
+}
+
+.headline {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: clamp(28px, 5vw, 60px);
+  line-height: 1.2;
+  color: var(--text);
+  max-width: 780px;
+  margin-bottom: calc(var(--u) * 1);
+}
+
+.headlineAccent {
+  color: var(--orange);
+}
+
+.subheading {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin-bottom: calc(var(--u) * 2);
+}
+
+/* ─── Scroll Indicator (slide 0) ───────────────────────────────── */
+.scrollIndicatorInline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.scrollLabel {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+
+.scrollLinePulse {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.continueHint {
+  margin-top: calc(var(--u) * 1.25);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.continueHint:hover {
+  color: var(--orange);
+}
+
+/* ─── Keyframes ────────────────────────────────────────────────── */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Lub–dub style pulse on the hero radial glow (inviting, alive) */
+@keyframes glowHeartbeat {
+  0%,
+  100% {
+    opacity: 0.26;
+    transform: scale(1);
+  }
+  9% {
+    opacity: 0.42;
+    transform: scale(1.045);
+  }
+  18% {
+    opacity: 0.26;
+    transform: scale(1);
+  }
+  27% {
+    opacity: 0.5;
+    transform: scale(1.07);
+  }
+  40% {
+    opacity: 0.26;
+    transform: scale(1);
+  }
+}
+
+/* ─── Reduced Motion ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .heroSection {
+    height: auto;
+  }
+
+  .heroScroller { display: none; }
+
+  .staticHeroReduced { display: flex; }
+
+  .scrollLinePulse {
+    animation: none;
+  }
+
+  .glowOrb {
+    animation: none;
+    opacity: 0.3;
+    transform: none;
+  }
+
+  .line4::after {
+    animation: none;
+  }
+}
+
+/* ─── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .slide {
+    padding: 0 20px;
+  }
+}

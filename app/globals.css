@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design Tokens ───────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --orange:       #FF8000;
+  --orange-bright:#FF9633;
+  --orange-deep:  #E06800;
+  --orange-glow:  rgba(255, 128, 0, 0.15);
+
+  --dark:         #0A0A0C;
+  --dark-2:       #111114;
+  --dark-3:       #1A1A1F;
+  --dark-4:       #222228;
+  --surface:      #16161A;
+
+  --text:         #EAEAEA;
+  --text-dim:     #888890;
+  --text-muted:   #7A7A82;
+
+  /* Spatial unit — all section padding / gaps snap to multiples of this */
+  --u: 24px;
+
+  /* Border radii */
+  --radius:    16px;
+  --radius-sm: 8px;
+}
+
+/* ─── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ─── Selection ───────────────────────────────────────────────── */
+::selection {
+  background: var(--orange);
+  color: var(--dark);
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--dark-4) var(--dark);
+}
+
+/* ─── Base Body ───────────────────────────────────────────────── */
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: var(--font-outfit, 'Outfit', sans-serif);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Pixel Grid Overlay ──────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,128,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,128,0,0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50%       { opacity: 0.4; transform: scaleY(0.6); }
+}
+
+/* ─── Reusable Component Classes ─────────────────────────────── */
+@layer components {
+
+  /* Buttons */
+  .btn {
+    @apply font-mono text-xs font-semibold tracking-[1px] uppercase
+           py-[14px] px-7 rounded-[6px] no-underline
+           transition-all duration-300 cursor-pointer
+           border-0 inline-block text-center;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--dark);
+  }
+  .btn-primary:hover {
+    background: var(--orange-bright);
+    box-shadow: 0 0 30px rgba(255,128,0,0.3);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--dark-4);
+  }
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* Tech / Skill Tags */
+  .tech-tag {
+    @apply font-mono text-[10px] px-[10px] py-1 rounded-[4px];
+    color: var(--text-muted);
+    background: var(--dark-3);
+    border: 1px solid var(--dark-4);
+  }
+
+  .skill-item {
+    @apply font-mono text-[11px] px-[14px] py-[6px] rounded-[6px]
+           transition-all duration-300;
+    color: var(--text-muted);
+    background: var(--dark-3);
+    border: 1px solid var(--dark-4);
+  }
+  .skill-item:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: rgba(255,128,0,0.05);
+  }
+
+  /* Section shared */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+}

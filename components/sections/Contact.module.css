@@ -1,0 +1,54 @@
+/* components/sections/Contact.module.css */
+
+.contactSection {
+  text-align: center;
+  padding: calc(var(--u) * 4) 40px calc(var(--u) * 3);
+}
+
+.inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.inviteLine {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  font-weight: 500;
+  margin: 0 0 calc(var(--u) * 2);
+}
+
+.linksColumn {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.75);
+  align-items: center;
+  margin-bottom: calc(var(--u) * 2);
+}
+
+.contactLink {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 14px;
+  color: var(--text);
+  padding: calc(var(--u) * 0.75) calc(var(--u) * 1.5);
+  border: 1px solid var(--dark-4);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contactLinkIcon {
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .contactSection {
+    padding: calc(var(--u) * 3) 20px;
+  }
+}

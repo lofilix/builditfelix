@@ -1,0 +1,140 @@
+/* components/sections/About.module.css */
+
+.aboutSection {
+  padding: calc(var(--u) * 5) 40px;
+  background: linear-gradient(180deg, var(--dark-2) 0%, var(--dark) 100%);
+}
+
+.grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+}
+
+.avatarWrapper {
+  width: 240px;
+  height: 240px;
+  position: relative;
+}
+
+.avatarGlow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 128, 0, 0.1) 0%, transparent 60%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.avatarFrame {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--u) * 1);
+  background: linear-gradient(145deg, var(--dark-3), var(--dark-4));
+  border: 2px solid var(--dark-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.avatarCrosshatch {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(255, 128, 0, 0.03) 50%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(255, 128, 0, 0.03) 50%, transparent 52%);
+  background-size: 12px 12px;
+}
+
+.avatarPixel {
+  width: 180px;
+  height: 180px;
+  border-radius: calc(var(--u) * 0.75);
+  overflow: hidden;
+  position: relative;
+}
+
+.pixelGrid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  background: var(--dark);
+  gap: 1px;
+}
+
+.pixelCell {
+  border-radius: 1px;
+}
+
+.bioLabel {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--orange);
+  margin-bottom: calc(var(--u) * 1);
+}
+
+.bioName {
+  font-family: var(--font-silkscreen), cursive;
+  font-size: 28px;
+  color: var(--text);
+  margin-bottom: calc(var(--u) * 1);
+}
+
+.bioNameAccent {
+  color: var(--orange);
+}
+
+.bioParagraph {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  margin-bottom: calc(var(--u) * 0.75);
+}
+
+.bioParagraph:last-of-type {
+  margin-bottom: calc(var(--u) * 1);
+}
+
+.bioStrong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .aboutSection {
+    padding: calc(var(--u) * 3) calc(var(--u) * 1);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: calc(var(--u) * 2);
+  }
+
+  .avatarWrapper {
+    margin: 0 auto;
+  }
+
+  .skills {
+    justify-content: center;
+  }
+}
