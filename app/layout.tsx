@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Silkscreen, Outfit, JetBrains_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
@@ -46,7 +47,10 @@ export default function RootLayout({
       lang="en"
       className={`${silkscreen.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
