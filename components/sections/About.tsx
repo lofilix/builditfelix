@@ -3,69 +3,142 @@
 /**
  * components/sections/About.tsx
  *
- * Two-column layout: pixel avatar left, bio + skills right.
+ * Two-column layout: "LOADOUT" stat-sheet panel left, bio right.
+ * The loadout panel replaces the old pixel avatar and presents the
+ * tech stack as numbered inventory slots with a rotating EQUIPPED pip.
  */
 
+import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import RevealOnScroll from '@/components/ui/RevealOnScroll';
 import SectionHeader from '@/components/ui/SectionHeader';
 import styles from './About.module.css';
 
-const PIXEL_MAP = [
-  'd d d d p p p p d d d d',
-  'd d d p p p p p p d d d',
-  'd d p2 p2 p2 p2 p2 p2 p2 p2 d d',
-  'd d pk pk pk pk pk pk pk pk d d',
-  'd pk pk w d pk pk d w pk pk d',
-  'd pk pk pk pk pk pk pk pk pk pk d',
-  'd d pk pk p p p p pk pk d d',
-  'd d d p p p p p p d d d',
-  'd d p p p2 p p p2 p p d d',
-  'd p p p p p p p p p p d',
-  'd d p2 p2 p2 d d p2 p2 p2 d d',
-  'd d p2 p2 p2 d d p2 p2 p2 d d',
+const SKILLS = [
+  'Next.js',
+  'React',
+  'SwiftUI',
+  'TypeScript',
+  'Supabase',
+  'Vercel',
+  'TailwindCSS',
+  'Figma',
+  'Claude Code',
+  'SEO & AI',
 ];
 
-const COLOR: Record<string, string> = {
-  p:  'var(--orange)',
-  p2: 'var(--orange-deep)',
-  pk: '#FFB366',
-  d:  'var(--dark-3)',
-  w:  '#EAEAEA',
-};
+const ROTATION_MS = 2500;
 
-function PixelCharacter() {
-  const cells = PIXEL_MAP.flatMap((row) => row.split(' '));
-  return (
-    <div className={styles.pixelGrid}>
-      {cells.map((type, i) => (
-        <div
-          key={i}
-          className={styles.pixelCell}
-          style={{ background: COLOR[type] }}
-        />
-      ))}
-    </div>
-  );
-}
+function SkillLoadout() {
+  const prefersReduced = useReducedMotion();
+  const [equippedIdx, setEquippedIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-function PixelAvatar() {
+  useEffect(() => {
+    if (prefersReduced || paused || pinned) return;
+    const id = window.setInterval(() => {
+      setEquippedIdx((i) => (i + 1) % SKILLS.length);
+    }, ROTATION_MS);
+    return () => window.clearInterval(id);
+  }, [prefersReduced, paused, pinned]);
+
+  const handleRowClick = (i: number) => {
+    if (pinned && i === equippedIdx) {
+      setPinned(false);
+      return;
+    }
+    setEquippedIdx(i);
+    setPinned(true);
+  };
+
+  const currentSkill = SKILLS[equippedIdx];
+
   return (
-    <div className={styles.avatarWrapper}>
-      <div className={styles.avatarGlow} />
-      <div className={styles.avatarFrame}>
-        <div className={styles.avatarCrosshatch} />
-        <div className={styles.avatarPixel}>
-          <PixelCharacter />
+    <div className={styles.panelWrapper}>
+      <div className={styles.panelGlow} />
+      <div
+        ref={containerRef}
+        className={styles.panelFrame}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+            setPaused(false);
+          }
+        }}
+      >
+        <div className={styles.panelCrosshatch} />
+        <div className={styles.loadoutInner}>
+          <div className={styles.loadoutHeader}>
+            <span className={styles.loadoutTitle}>LOADOUT</span>
+            <span className={styles.loadoutStatus}>
+              <span className={styles.loadoutDot} aria-hidden="true" />
+              ONLINE
+            </span>
+          </div>
+
+          <div className={styles.loadoutRule} aria-hidden="true" />
+
+          <motion.ul
+            className={styles.loadoutList}
+            initial={prefersReduced ? false : 'hidden'}
+            whileInView={prefersReduced ? undefined : 'visible'}
+            viewport={{ once: true, margin: '-40px 0px' }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.06 } },
+            }}
+          >
+            {SKILLS.map((skill, i) => {
+              const isEquipped = i === equippedIdx;
+              return (
+                <motion.li
+                  key={skill}
+                  variants={{
+                    hidden: { opacity: 0, x: -8 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <button
+                    type="button"
+                    className={`${styles.loadoutRow} ${isEquipped ? styles.loadoutRowEquipped : ''}`}
+                    onClick={() => handleRowClick(i)}
+                    aria-pressed={isEquipped}
+                    aria-label={`Equip ${skill}`}
+                  >
+                    <span className={styles.loadoutSlot}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className={styles.loadoutName}>{skill}</span>
+                    <span className={styles.loadoutPip} aria-hidden="true" />
+                  </button>
+                </motion.li>
+              );
+            })}
+          </motion.ul>
+
+          <div className={styles.loadoutRule} aria-hidden="true" />
+
+          <div className={styles.loadoutFooter}>
+            <span className={styles.loadoutFooterLabel}>EQUIPPED</span>
+            <span className={styles.loadoutFooterArrow} aria-hidden="true">
+              ▸
+            </span>
+            <span className={styles.loadoutFooterValue}>{currentSkill}</span>
+          </div>
+
+          <span className={styles.srOnly} role="status" aria-live="polite">
+            {`Currently equipped: ${currentSkill}`}
+          </span>
         </div>
       </div>
     </div>
   );
 }
-
-const SKILLS = [
-  'Next.js', 'React', 'SwiftUI', 'TypeScript',
-  'Supabase', 'Vercel', 'TailwindCSS', 'Figma', 'Claude Code', 'SEO & AI',
-];
 
 export default function About() {
   return (
@@ -76,7 +149,7 @@ export default function About() {
 
       <div className={styles.grid}>
         <RevealOnScroll delay={0.1} className="flex justify-center">
-          <PixelAvatar />
+          <SkillLoadout />
         </RevealOnScroll>
 
         <RevealOnScroll delay={0.2}>
@@ -99,11 +172,6 @@ export default function About() {
             When I&apos;m not coding, I&apos;m probably gaming, out with the dogs, or deep
             in a build thread about tooling and performance.
           </p>
-          <div className={styles.skills}>
-            {SKILLS.map((skill) => (
-              <span key={skill} className="skill-item">{skill}</span>
-            ))}
-          </div>
         </RevealOnScroll>
       </div>
     </section>

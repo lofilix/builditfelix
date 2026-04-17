@@ -117,19 +117,6 @@ body::before {
     border: 1px solid var(--dark-4);
   }
 
-  .skill-item {
-    @apply font-mono text-[11px] px-[14px] py-[6px] rounded-[6px]
-           transition-all duration-300;
-    color: var(--text-muted);
-    background: var(--dark-3);
-    border: 1px solid var(--dark-4);
-  }
-  .skill-item:hover {
-    border-color: var(--orange);
-    color: var(--orange);
-    background: rgba(255,128,0,0.05);
-  }
-
   /* Section shared */
   section {
     position: relative;
