@@ -238,6 +238,23 @@ function GBACartridge({
   );
 }
 
+function IOSPhoneMockup({ project }: { project: Project }) {
+  return (
+    <div className={`${styles.phoneFrameLarge} ${styles.phoneFrameMobile}`}>
+      <div className={styles.phoneScreenAreaLarge}>
+        <Image
+          src={project.image}
+          alt={`${project.name} iOS app`}
+          fill
+          className={styles.phoneImageLarge}
+          sizes="(max-width: 768px) min(88vw, 280px), 320px"
+          draggable={false}
+        />
+      </div>
+    </div>
+  );
+}
+
 function GBAScreen({
   state,
   prevSlideRef,
@@ -733,6 +750,16 @@ export default function GBAProjects() {
 
             </div>
 
+          {/* iOS phone mockup — mobile only (desktop uses iosPhonePanel beside GBA) */}
+          {isMobile && iosPhoneProject && (
+            <div
+              className={styles.phonePanelMobile}
+              aria-hidden={!iosActive}
+            >
+              <IOSPhoneMockup project={iosPhoneProject} />
+            </div>
+          )}
+
           {/* Mobile controls */}
           {isMobile && (
             <>
@@ -809,8 +836,8 @@ export default function GBAProjects() {
             </>
           )}
 
-          {/* Mobile project info drawer */}
-          {isMobile && currentProject && (
+          {/* Mobile project info — web only; iOS uses GBA screen + phone mockup above */}
+          {isMobile && currentProject && state.screen === 'web' && (
             <div className={styles.mobileInfo}>
               <p className={styles.mobileInfoTitle}>{currentProject.name}</p>
               <p className={styles.mobileInfoDesc}>{currentProject.description}</p>

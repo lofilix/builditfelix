@@ -4,7 +4,6 @@
 
 .section {
   position: relative;
-  z-index: 3;
   min-height: 100vh;
   padding: calc(var(--u) * 4) calc(var(--u) * 2) calc(var(--u) * 4);
   display: flex;
@@ -1261,6 +1260,19 @@ button.menuItem:focus-visible {
 .phoneImageLarge {
   object-fit: cover;
   object-position: top center;
+}
+
+/* Mobile-only: centered frame below console, above touch controls */
+.phonePanelMobile {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: calc(var(--u) * 1.25) 0 calc(var(--u) * 0.75);
+}
+
+.phoneFrameMobile {
+  width: 100%;
+  max-width: min(280px, 88vw);
 }
 
 /* ── iOS screen card — text info inside GBA screen ── */
