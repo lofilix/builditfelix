@@ -64,29 +64,64 @@ export function useKeyboardAudio() {
   }, []);
 
   const ensureAudio = useCallback(async () => {
-    if (userStartedRef.current && audioContextRef.current) {
+    try {
+      if (userStartedRef.current && audioContextRef.current) {
+        if (audioContextRef.current.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
+        ensureGraph(audioContextRef.current);
+        return audioContextRef.current;
+      }
+      const Ctx =
+        typeof window !== 'undefined'
+          ? window.AudioContext ||
+            (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+          : null;
+      if (!Ctx) return null;
+      if (!audioContextRef.current) {
+        audioContextRef.current = new Ctx();
+      }
+      userStartedRef.current = true;
       if (audioContextRef.current.state === 'suspended') {
         await audioContextRef.current.resume();
       }
       ensureGraph(audioContextRef.current);
       return audioContextRef.current;
+    } catch {
+      // resume() rejected (usually: called outside a live user-activation
+      // task on Safari/Chromium). Reset so the next real gesture retries
+      // creation/resume cleanly instead of staying in a half-initialised
+      // state that silently drops every keystroke.
+      userStartedRef.current = false;
+      return null;
     }
-    const Ctx =
-      typeof window !== 'undefined'
-        ? window.AudioContext ||
-          (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
-        : null;
-    if (!Ctx) return null;
-    if (!audioContextRef.current) {
-      audioContextRef.current = new Ctx();
-    }
-    userStartedRef.current = true;
-    if (audioContextRef.current.state === 'suspended') {
-      await audioContextRef.current.resume();
-    }
-    ensureGraph(audioContextRef.current);
-    return audioContextRef.current;
   }, [ensureGraph]);
+
+  // ── First-gesture unlock (document-level, one-shot) ───────────────
+  // The per-handler unlock in Hero only catches gestures that land on the
+  // hero scroller. If the user's very first interaction is on the nav, a
+  // CTA, or elsewhere, the AudioContext would otherwise get constructed
+  // later from a setTimeout in TypedLine — outside any user-activation
+  // window — and Safari/Chromium silently refuse to resume it. Listening
+  // at the document in capture phase guarantees we catch the first real
+  // gesture regardless of where it lands, then self-removes.
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const unlock = () => {
+      void ensureAudio();
+      document.removeEventListener('pointerdown', unlock, true);
+      document.removeEventListener('touchstart', unlock, true);
+      document.removeEventListener('keydown', unlock, true);
+    };
+    document.addEventListener('pointerdown', unlock, { capture: true, passive: true });
+    document.addEventListener('touchstart', unlock, { capture: true, passive: true });
+    document.addEventListener('keydown', unlock, { capture: true });
+    return () => {
+      document.removeEventListener('pointerdown', unlock, true);
+      document.removeEventListener('touchstart', unlock, true);
+      document.removeEventListener('keydown', unlock, true);
+    };
+  }, [ensureAudio]);
 
   const toggleMute = useCallback(() => {
     void ensureAudio();
