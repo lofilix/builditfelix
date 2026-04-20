@@ -4,8 +4,6 @@ My personal portfolio site. Built with Next.js and deployed on Vercel.
 
 🔗 **Live site:** [builditfelix.dev](https://builditfelix.dev)
 
-![Portfolio screenshot](./public/og-image.png)
-
 ## Stack
 
 - **Framework** — Next.js (App Router)
